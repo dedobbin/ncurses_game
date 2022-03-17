@@ -3,9 +3,10 @@
 
 int main (int argc, char *argv[])
 {
-    ncurses_init(); 
-    while (ncurses_get_input()) {
-    }
+    auto windows = ncurses_init(); 
+    do {
+        ncurses_render(windows.get());
+    } while (ncurses_get_input());
     ncurses_quit();
     return 0;
 }

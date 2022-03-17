@@ -14,3 +14,4 @@ struct Windows
 std::unique_ptr<Windows>  ncurses_init();
 void ncurses_quit();
 bool ncurses_get_input();
+void ncurses_render(Windows* w);

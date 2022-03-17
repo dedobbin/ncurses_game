@@ -87,3 +87,8 @@ bool ncurses_get_input()
     return true;
 }
 
+void ncurses_render(Windows* w)
+{
+    refresh();
+    wrefresh(w->game.get());
+}
