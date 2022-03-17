@@ -3,12 +3,13 @@
 
 void window_deleter(WINDOW *win)
 {
-    std::cout << "window deleted" << std::endl;
+    //std::cout << "window deleted" << std::endl;
     delwin(win);
 }
 
-Windows::Windows(WINDOW* game)
-: game(game, &window_deleter)
+Windows::Windows(WINDOW* game, WINDOW* stats, WINDOW* debug)
+
+: game(game, &window_deleter), stats(stats, &window_deleter), debug(debug, &window_deleter)
 {}
 
 std::unique_ptr<Windows> ncurses_init()
@@ -29,7 +30,11 @@ std::unique_ptr<Windows> ncurses_init()
     init_pair(7, COLOR_WHITE, COLOR_BLACK);
 
 
-    auto windows = std::make_unique<Windows>(newwin(30,30,0,0));
+    auto windows = std::make_unique<Windows>(
+        newwin(30,30,0,0),
+        newwin(30, 30,0,30),
+        newwin(30, 30,0,60)
+    );
     return windows;
 }
 
