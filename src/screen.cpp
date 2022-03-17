@@ -8,7 +8,6 @@ void window_deleter(WINDOW *win)
 }
 
 Windows::Windows(WINDOW* game, WINDOW* stats, WINDOW* debug)
-
 : game(game, &window_deleter), stats(stats, &window_deleter), debug(debug, &window_deleter)
 {}
 
@@ -92,7 +91,7 @@ bool ncurses_get_input()
     return true;
 }
 
-void ncurses_render(Windows* w)
+void ncurses_game_render(Windows* w)
 {
     refresh();
     wrefresh(w->game.get());
