@@ -2,6 +2,7 @@
 #include <memory>
 #include <ncurses.h>
 #include <iostream>
+#include "room.h"
 
 void window_deleter(WINDOW *win);
 
@@ -18,5 +19,5 @@ struct Windows
 std::unique_ptr<Windows>  ncurses_init();
 void ncurses_quit();
 bool ncurses_get_input();
-void ncurses_game_render(Windows* w);
+void ncurses_game_render(Windows* w, const Room& room);
 void debug_print(Windows* w, std::string str);

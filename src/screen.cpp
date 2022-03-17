@@ -91,8 +91,14 @@ bool ncurses_get_input()
     return true;
 }
 
-void ncurses_game_render(Windows* w)
+void ncurses_game_render(Windows* w, const Room& room)
 {
+    for (int y = 0; y < room.h; y++) {
+        for (int x = 0; x < room.w; x++) {
+            mvwaddch(w->game.get(), y, x, '.');
+        }
+    }
+
     refresh();
     wrefresh(w->game.get());
 }
