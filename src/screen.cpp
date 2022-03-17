@@ -31,8 +31,8 @@ std::unique_ptr<Windows> ncurses_init()
 
     auto windows = std::make_unique<Windows>(
         newwin(30,30,0,0),
-        newwin(30, 30,0,30),
-        newwin(30, 30,0,60)
+        newwin(30,30,30,0),
+        newwin(30,30,0,30)
     );
     return windows;
 }
@@ -95,4 +95,11 @@ void ncurses_game_render(Windows* w)
 {
     refresh();
     wrefresh(w->game.get());
+}
+
+void debug_print(Windows* w, std::string str)
+{
+    str += '\n';
+    wprintw(w->debug.get(), str.c_str());
+    wrefresh(w->debug.get());
 }

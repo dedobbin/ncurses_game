@@ -17,3 +17,4 @@ std::unique_ptr<Windows>  ncurses_init();
 void ncurses_quit();
 bool ncurses_get_input();
 void ncurses_game_render(Windows* w);
+void debug_print(Windows* w, std::string str);
