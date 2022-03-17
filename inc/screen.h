@@ -5,12 +5,14 @@
 
 void window_deleter(WINDOW *win);
 
+typedef std::unique_ptr<WINDOW, decltype(&window_deleter)> window_ptr;
+
 struct Windows
 {
     Windows(WINDOW* game, WINDOW* stats, WINDOW* debug);
-    std::unique_ptr<WINDOW, decltype(&window_deleter)> game;
-    std::unique_ptr<WINDOW, decltype(&window_deleter)> stats;
-    std::unique_ptr<WINDOW, decltype(&window_deleter)> debug;
+    window_ptr game;
+    window_ptr stats;
+    window_ptr debug;
 };
 
 std::unique_ptr<Windows>  ncurses_init();
