@@ -1,0 +1,7 @@
+program
+*.o
+*.d
+*.a
+*.so
+build/
+.vscode/
