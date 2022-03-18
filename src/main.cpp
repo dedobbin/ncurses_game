@@ -3,20 +3,20 @@
 #include "room.h"
 
 
-void enemy_behavior(Entity* self, Room* room)
+void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
 {
     switch(rand() % 4){
         case 0:
-            self->x++;
+            room->moveEntity(self, self->x + 1, self->y);
             break;
-        case 1: 
-            self->y++;
+        case 1:
+            room->moveEntity(self, self->x - 1, self->y);
             break;
-        case 2: 
-            self->x--;
+        case 2:
+            room->moveEntity(self, self->x, self->y + 1);
             break;
-        case 3:    
-            self->y--;
+        case 3:
+            room->moveEntity(self, self->x, self->y - 1);
             break;
     }
 }

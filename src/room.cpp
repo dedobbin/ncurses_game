@@ -19,7 +19,7 @@ void Room::tick()
 {
     for (auto &e: entities) {
         if (!e->behaviorCallback) continue;
-        e->behaviorCallback(e.get(), this);
+        e->behaviorCallback(e, this);
     }
 }
 
@@ -30,4 +30,15 @@ std::shared_ptr<Entity> Room::getEntity(int x, int y)
     });
 
     return found != entities.end() ? *found : nullptr;
+}
+
+void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
+{
+    auto collider = getEntity(x, y);
+    if (!collider) {
+        e->x = x;
+        e->y = y;
+    } else {
+        //todo: effects etc
+    }
 }

@@ -53,16 +53,16 @@ bool ncurses_input(Room * room)
     int ch = getch();
     switch(ch) {
         case KEY_UP:
-            player->y--;
+            room->moveEntity(player, player->x, player->y - 1);
             break;
         case KEY_DOWN:
-            player->y++;
+            room->moveEntity(player, player->x, player->y + 1);
             break;
         case KEY_LEFT:
-            player->x--;
+            room->moveEntity(player, player->x - 1, player->y);
             break;
         case KEY_RIGHT:
-            player->x++;
+            room->moveEntity(player, player->x + 1, player->y);
             break;
         case KEY_BACKSPACE:
             break;

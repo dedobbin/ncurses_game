@@ -7,7 +7,7 @@ struct Room
 {
     Room(int w, int h);
     void tick();
-    bool isEmpty(int x, int y);
+    void moveEntity(std::shared_ptr<Entity> e, int x, int y);
     std::shared_ptr<Entity> getEntity(int x, int y);
     const int w;
     const int h;
