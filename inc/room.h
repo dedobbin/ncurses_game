@@ -12,5 +12,7 @@ struct Room
     const int w;
     const int h;
     std::vector<std::shared_ptr<Entity>> entities;
+    std::vector<std::unique_ptr<Wall>> walls;
     std::shared_ptr<Entity> getPlayer();
+    std::pair<int, int> getRandomEmptyPos();
 };

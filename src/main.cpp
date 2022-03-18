@@ -33,6 +33,22 @@ std::unique_ptr<Room> create_room(int id)
             room->entities.emplace_back(new Entity("enemy_1", 3, 5, enemy_behavior));
             return room;
         }
+        case 3:{
+            auto room = std::make_unique<Room>(10, 10);
+            int n_walls = 5;
+            for (int i = 0; i < n_walls; i++){
+                auto pos = room->getRandomEmptyPos();
+                room->walls.emplace_back(new Wall{pos.first, pos.second});
+            }
+            
+            int n_entities = 5;
+            for (int i = 0; i < n_entities; i++){
+                auto pos = room->getRandomEmptyPos();
+                room->entities.emplace_back(new Entity("enemy_" + i, pos.first, pos.second, enemy_behavior));
+            }
+
+            return room;
+        }
         default:
             throw std::runtime_error("invalid room id");
     }
@@ -41,7 +57,7 @@ std::unique_ptr<Room> create_room(int id)
 int main (int argc, char *argv[])
 {
     auto windows = ncurses_init(); 
-    auto room = create_room(2);
+    auto room = create_room(3);
     auto player = std::make_shared<Entity>("player", 0, 0, true);
     room->entities.push_back(player);
     do {

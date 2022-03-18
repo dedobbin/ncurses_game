@@ -44,3 +44,18 @@ void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
         //todo: effects etc
     }
 }
+
+std::pair<int, int> Room::getRandomEmptyPos()
+{
+    int x, y;
+    int tries = 100;
+    do {
+        x = rand() % w;
+        y = rand() % h;
+        tries --;
+        if (tries == 0){
+            throw std::runtime_error("could not find empty position");
+        }
+    } while (getEntity(x, y));
+    return {x, y};
+}

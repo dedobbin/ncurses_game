@@ -12,3 +12,8 @@ struct Entity
     bool isPlayer=false;
     void (*behaviorCallback)(std::shared_ptr<Entity> self, Room* room);
 };
+
+struct Wall
+{
+    int x,y;
+};

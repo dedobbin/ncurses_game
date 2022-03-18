@@ -105,6 +105,10 @@ void ncurses_game_render(Windows* w, Room* r)
         }
     }
 
+    for (auto& wall : r->walls){
+        mvwaddch(w->game.get(), wall->y, wall->x, '#');
+    }
+
     for(auto &e: r->entities){
         if (e->isPlayer) {
             wattron(w->game.get(), COLOR_PAIR(2));
