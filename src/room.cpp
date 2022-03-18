@@ -14,3 +14,10 @@ std::shared_ptr<Entity> Room::getPlayer()
     assert(*found);
     return *found;
 }
+
+void Room::tick()
+{
+    for (auto &e: entities) {
+        e->tick();
+    }
+}

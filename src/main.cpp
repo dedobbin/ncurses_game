@@ -27,6 +27,7 @@ int main (int argc, char *argv[])
     room->entities.push_back(player);
     do {
         ncurses_game_render(windows.get(), room.get());
+        room->tick();
     } while (ncurses_input(room.get()));
     ncurses_quit();
     return 0;
