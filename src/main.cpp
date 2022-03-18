@@ -2,6 +2,12 @@
 #include "screen.h"
 #include "room.h"
 
+
+void enemy_behavior(Entity* self)
+{
+    self->x ++;
+}
+
 std::unique_ptr<Room> create_room(int id)
 {
     switch(id)
@@ -11,7 +17,7 @@ std::unique_ptr<Room> create_room(int id)
             return std::make_unique<Room>(10, 10);
         case 2:{
             auto room = std::make_unique<Room>(10, 10);
-            room->entities.emplace_back(new Entity("enemy_1", 3, 5));
+            room->entities.emplace_back(new Entity("enemy_1", 3, 5, enemy_behavior));
             return room;
         }
         default:

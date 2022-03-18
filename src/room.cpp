@@ -18,6 +18,7 @@ std::shared_ptr<Entity> Room::getPlayer()
 void Room::tick()
 {
     for (auto &e: entities) {
-        e->tick();
+        if (!e->behaviorCallback) continue;
+        e->behaviorCallback(e.get());
     }
 }
