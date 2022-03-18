@@ -9,4 +9,5 @@ struct Room
     const int w;
     const int h;
     std::vector<std::shared_ptr<Entity>> entities;
+    std::shared_ptr<Entity> getPlayer();
 };

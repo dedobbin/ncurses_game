@@ -47,17 +47,22 @@ void ncurses_quit()
 /**
  * Returns true if didn't quit 
  */
-bool ncurses_get_input()
+bool ncurses_input(Room * room)
 {
+    auto player = room->getPlayer();
     int ch = getch();
     switch(ch) {
         case KEY_UP:
+            player->y--;
             break;
         case KEY_DOWN:
+            player->y++;
             break;
         case KEY_LEFT:
+            player->x--;
             break;
         case KEY_RIGHT:
+            player->x++;
             break;
         case KEY_BACKSPACE:
             break;
