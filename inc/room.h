@@ -1,8 +1,12 @@
 #pragma once
+#include <vector>
+#include <memory>
+#include "entity.h"
 
 struct Room 
 {
     Room(int w, int h);
     const int w;
     const int h;
+    std::vector<std::shared_ptr<Entity>> entities;
 };

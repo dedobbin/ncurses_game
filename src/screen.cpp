@@ -91,11 +91,24 @@ bool ncurses_get_input()
     return true;
 }
 
-void ncurses_game_render(Windows* w, const Room& room)
+void ncurses_game_render(Windows* w, Room* r)
 {
-    for (int y = 0; y < room.h; y++) {
-        for (int x = 0; x < room.w; x++) {
+    //todo: check if fits in screen
+    for (int y = 0; y < r->h; y++) {
+        for (int x = 0; x < r->w; x++) {
             mvwaddch(w->game.get(), y, x, '.');
+        }
+    }
+
+    for(auto &e: r->entities){
+        if (e->isPlayer) {
+            wattron(w->game.get(), COLOR_PAIR(2));
+            mvwaddch(w->game.get(), e->y, e->x, '@');
+            wattroff(w->game.get(), COLOR_PAIR(7));
+        } else {
+            wattron(w->game.get(), COLOR_PAIR(1));
+            mvwaddch(w->game.get(), e->y, e->x, 'o');
+            wattroff(w->game.get(), COLOR_PAIR(1));
         }
     }
 

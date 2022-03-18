@@ -19,5 +19,5 @@ struct Windows
 std::unique_ptr<Windows>  ncurses_init();
 void ncurses_quit();
 bool ncurses_get_input();
-void ncurses_game_render(Windows* w, const Room& room);
+void ncurses_game_render(Windows* w, Room* r);
 void debug_print(Windows* w, std::string str);
