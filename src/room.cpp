@@ -34,6 +34,8 @@ std::shared_ptr<Entity> Room::getEntity(int x, int y)
 
 void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
 {
+    if (x < 0 || x >= w || y < 0 || y >= h) return;
+    //todo: check for walls
     auto collider = getEntity(x, y);
     if (!collider) {
         e->x = x;
