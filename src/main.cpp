@@ -31,6 +31,7 @@ std::unique_ptr<Room> create_room(int id)
         case 2:{
             auto room = std::make_unique<Room>(10, 10);
             room->entities.emplace_back(new Entity("enemy_1", 3, 5, enemy_behavior));
+            room->entities.emplace_back(new Entity("enemy_2", 2, 2, false, false));
             return room;
         }
         case 3:{
@@ -57,7 +58,7 @@ std::unique_ptr<Room> create_room(int id)
 int main (int argc, char *argv[])
 {
     auto windows = ncurses_init(); 
-    auto room = create_room(3);
+    auto room = create_room(2);
     auto player = std::make_shared<Entity>("player", 0, 0, true);
     room->entities.push_back(player);
     do {

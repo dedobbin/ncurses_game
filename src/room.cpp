@@ -48,11 +48,13 @@ void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
     if (hasWall(x, y)) return;
 
     auto collider = getEntity(x, y);
-    if (!collider) {
+    if (!collider || !collider->isSolid) {
         e->x = x;
         e->y = y;
-    } else {
-        //todo: effects etc
+    } 
+
+    if (collider){
+        //todo: effect
     }
 }
 
