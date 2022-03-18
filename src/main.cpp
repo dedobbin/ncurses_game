@@ -3,9 +3,22 @@
 #include "room.h"
 
 
-void enemy_behavior(Entity* self)
+void enemy_behavior(Entity* self, Room* room)
 {
-    self->x ++;
+    switch(rand() % 4){
+        case 0:
+            self->x++;
+            break;
+        case 1: 
+            self->y++;
+            break;
+        case 2: 
+            self->x--;
+            break;
+        case 3:    
+            self->y--;
+            break;
+    }
 }
 
 std::unique_ptr<Room> create_room(int id)

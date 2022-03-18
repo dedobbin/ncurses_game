@@ -19,6 +19,15 @@ void Room::tick()
 {
     for (auto &e: entities) {
         if (!e->behaviorCallback) continue;
-        e->behaviorCallback(e.get());
+        e->behaviorCallback(e.get(), this);
     }
+}
+
+std::shared_ptr<Entity> Room::getEntity(int x, int y)
+{
+    auto found = std::find_if (entities.begin(), entities.end(), [x, y](const std::shared_ptr<Entity>& e) {
+        return e->x == x && e->y == y;
+    });
+
+    return found != entities.end() ? *found : nullptr;
 }
