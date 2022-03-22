@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cassert>
 #include "sys.h"
 #include "room.h"
 
@@ -25,13 +26,15 @@ void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
 void enemy_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room)
 {
     if (other->isPlayer) {
-        sys.info("enemy touches player");
+        assert(other->stats);
+        sys.info("enemy hits player");
+        other->stats->hp -= self->stats->power;
     }
 }
 
 void player_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room)
 {
-    sys.info("player touches enemy");
+    sys.info("player attacks enemy");
 
 }
 
@@ -44,7 +47,6 @@ std::unique_ptr<Room> create_room(int id)
             return std::make_unique<Room>(10, 10);
         case 2:{
             auto room = std::make_unique<Room>(10, 10);
-            room->entities.push_back(EntityBuilder::enemy("enemy", 3, 5, true, enemy_behavior, enemy_effect));
             room->entities.emplace_back(new Entity("enemy_2", 2, 2, false));
             return room;
         }
@@ -60,7 +62,9 @@ std::unique_ptr<Room> create_room(int id)
             for (int i = 0; i < n_entities; i++){
                 auto pos = room->getRandomEmptyPos();
                 room->entities.push_back(
-                    EntityBuilder::enemy("enemy", pos.first, pos.second, true, enemy_behavior, enemy_effect)
+                    EntityBuilder::enemy("enemy", pos.first, pos.second, true, 
+                        new Stats{rand () % 20, rand () % 10},
+                        enemy_behavior, enemy_effect)
                 ); 
                     
             }
