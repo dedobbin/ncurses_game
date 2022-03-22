@@ -2,6 +2,8 @@
 #include <cassert>
 #include <algorithm>
 
+#include <screen.h>
+
 Room::Room(int w, int h)
 :w(w), h(h)
 {}
@@ -53,8 +55,8 @@ void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
         e->y = y;
     } 
 
-    if (collider){
-        //todo: effect
+    if (collider && collider->effectCallback){
+        collider->effectCallback(collider, e, this);
     }
 }
 

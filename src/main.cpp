@@ -21,6 +21,13 @@ void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
     }
 }
 
+void enemy_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room)
+{
+    if (other->isPlayer) {
+        //todo: some effect
+    }
+}
+
 std::unique_ptr<Room> create_room(int id)
 {
     switch(id)
@@ -58,7 +65,7 @@ std::unique_ptr<Room> create_room(int id)
 int main (int argc, char *argv[])
 {
     auto windows = ncurses_init(); 
-    auto room = create_room(2);
+    auto room = create_room(3);
     auto player = std::make_shared<Entity>("player", 0, 0, true);
     room->entities.push_back(player);
     do {
