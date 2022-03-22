@@ -2,8 +2,6 @@
 #include <cassert>
 #include <algorithm>
 
-#include <screen.h>
-
 Room::Room(int w, int h)
 :w(w), h(h)
 {}

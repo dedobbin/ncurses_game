@@ -16,8 +16,15 @@ struct Windows
     window_ptr debug;
 };
 
-std::unique_ptr<Windows>  ncurses_init();
-void ncurses_quit();
-bool ncurses_input(Room* room);
-void ncurses_game_render(Windows* w, Room* r);
-void debug_print(Windows* w, std::string str);
+struct Sys
+{
+    public:
+        Sys();
+        ~Sys();
+        bool ncurses_input(Room* room);
+        void ncurses_game_render(Room* r);
+        void debug_print(std::string str);
+    private:
+        void ncurses_init();
+        std::unique_ptr<Windows> windows;
+};

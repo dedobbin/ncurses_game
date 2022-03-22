@@ -1,5 +1,7 @@
-#include "screen.h"
+#include "sys.h"
 #include <memory>
+
+
 
 void window_deleter(WINDOW *win)
 {
@@ -11,7 +13,18 @@ Windows::Windows(WINDOW* game, WINDOW* stats, WINDOW* debug)
 : game(game, &window_deleter), stats(stats, &window_deleter), debug(debug, &window_deleter)
 {}
 
-std::unique_ptr<Windows> ncurses_init()
+Sys::Sys()
+{
+    ncurses_init();
+}
+
+Sys::~Sys()
+{
+    endwin();
+}
+
+
+void Sys::ncurses_init()
 {
     initscr();
     cbreak();
@@ -28,26 +41,17 @@ std::unique_ptr<Windows> ncurses_init()
     init_pair(6, COLOR_CYAN, COLOR_BLACK);
     init_pair(7, COLOR_WHITE, COLOR_BLACK);
 
-
-    auto windows = std::make_unique<Windows>(
+    windows = std::make_unique<Windows>(
         newwin(30,30,0,0),
         newwin(30,30,30,0),
         newwin(30,30,0,30)
     );
-    return windows;
-}
-
-
-void ncurses_quit()
-{
-    //TODO: could be done using RAII
-    endwin();
 }
 
 /**
  * Returns true if didn't quit 
  */
-bool ncurses_input(Room * room)
+bool Sys::ncurses_input(Room * room)
 {
     auto player = room->getPlayer();
     int ch = getch();
@@ -96,38 +100,39 @@ bool ncurses_input(Room * room)
     return true;
 }
 
-void ncurses_game_render(Windows* w, Room* r)
+void Sys::ncurses_game_render(Room* r)
 {
+    auto game_window = windows->game.get();
     //todo: check if fits in screen
     for (int y = 0; y < r->h; y++) {
         for (int x = 0; x < r->w; x++) {
-            mvwaddch(w->game.get(), y, x, '.');
+            mvwaddch(game_window, y, x, '.');
         }
     }
 
     for (auto& wall : r->walls){
-        mvwaddch(w->game.get(), wall->y, wall->x, '#');
+        mvwaddch(game_window, wall->y, wall->x, '#');
     }
 
     for(auto &e: r->entities){
         if (e->isPlayer) {
-            wattron(w->game.get(), COLOR_PAIR(2));
-            mvwaddch(w->game.get(), e->y, e->x, '@');
-            wattroff(w->game.get(), COLOR_PAIR(7));
+            wattron(game_window, COLOR_PAIR(2));
+            mvwaddch(game_window, e->y, e->x, '@');
+            wattroff(game_window, COLOR_PAIR(7));
         } else {
-            wattron(w->game.get(), COLOR_PAIR(1));
-            mvwaddch(w->game.get(), e->y, e->x, 'o');
-            wattroff(w->game.get(), COLOR_PAIR(1));
+            wattron(game_window, COLOR_PAIR(1));
+            mvwaddch(game_window, e->y, e->x, 'o');
+            wattroff(game_window, COLOR_PAIR(1));
         }
     }
 
     refresh();
-    wrefresh(w->game.get());
+    wrefresh(game_window);
 }
 
-void debug_print(Windows* w, std::string str)
+void Sys::debug_print(std::string str)
 {
     str += '\n';
-    wprintw(w->debug.get(), str.c_str());
-    wrefresh(w->debug.get());
+    wprintw(windows->debug.get(), str.c_str());
+    wrefresh(windows->debug.get());
 }
