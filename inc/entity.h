@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <memory>
-#include "combat.h"
 struct Room; //forward declaration because circular dependency
 
 struct Entity 
@@ -18,7 +17,6 @@ struct Entity
     bool isSolid=true;
     void (*behaviorCallback)(std::shared_ptr<Entity> self, Room* room);
     void (*effectCallback)(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room);
-    std::shared_ptr<Combat> combat;
 };
 
 struct Wall

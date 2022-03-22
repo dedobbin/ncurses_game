@@ -1,8 +1,6 @@
 #include "sys.h"
 #include <memory>
 
-
-
 void window_deleter(WINDOW *win)
 {
     //std::cout << "window deleted" << std::endl;

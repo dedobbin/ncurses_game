@@ -26,7 +26,7 @@ void enemy_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, R
 {
     if (other->isPlayer) {
         //todo: some effect
-        sys.info("combat start");
+        sys.info("enemy touches player");
     }
 }
 
