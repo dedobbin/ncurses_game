@@ -19,6 +19,7 @@ struct Entity
     void (*behaviorCallback)(std::shared_ptr<Entity> self, Room* room);
     void (*effectCallback)(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room);
     std::unique_ptr<Stats> stats;
+    void attack(Entity* other);
 };
 
 struct Wall

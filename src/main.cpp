@@ -27,15 +27,16 @@ void enemy_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, R
 {
     if (other->isPlayer) {
         assert(other->stats);
-        sys.info("enemy hits player");
-        other->stats->hp -= self->stats->power;
+        sys.info(self->name + " hits " + other->name);
+        self->attack(other.get());
     }
 }
 
 void player_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room)
 {
-    sys.info("player attacks enemy");
-
+    if (!other->stats) return;
+    sys.info(self->name + " hits " + other->name);
+    self->attack(other.get());
 }
 
 std::unique_ptr<Room> create_room(int id)

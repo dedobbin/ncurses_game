@@ -1,3 +1,4 @@
+#include <cassert>
 #include "entity.h"
 
 Entity::Entity(std::string name, int x, int y, bool isSolid)
@@ -7,6 +8,14 @@ Entity::Entity(std::string name, int x, int y, bool isSolid)
 Entity::Entity(std::string name, int x, int y, bool isSolid, Stats* stats)
 : name(name), x(x), y(y), isSolid(isSolid), stats(std::unique_ptr<Stats>(stats))
 {}
+
+//todo: pass in spell or weapon or whatever using templates
+void Entity::attack(Entity* other)
+{
+    assert(stats);
+    assert(other->stats);
+    other->stats->hp -= stats->power;
+}
 
 std::shared_ptr<Entity> EntityBuilder::player(std::string name, int x, int y,
         void (*effectCallback)(std::shared_ptr<Entity>, std::shared_ptr<Entity>, Room*)

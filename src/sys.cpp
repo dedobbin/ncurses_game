@@ -129,7 +129,6 @@ void Sys::ncurses_game_render(Room* r)
     sprintf(hpStr, "%d hp", playerStats->hp);
     mvwprintw(windows->stats.get(), 0, 0, hpStr);
 
-
     refresh();
     wrefresh(windows->stats.get());
     wrefresh(game_window);
