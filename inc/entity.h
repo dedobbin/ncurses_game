@@ -5,12 +5,7 @@ struct Room; //forward declaration because circular dependency
 
 struct Entity 
 {
-    Entity(std::string name, int x, int y, bool isPlayer=true, bool isSolid=true);
-    Entity(std::string name, int x, int y, 
-        void (*behaviorCallback)(std::shared_ptr<Entity>, Room*), 
-        void (*effectCallback)(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room),
-        bool isSolid=true
-    );
+    Entity(std::string name, int x, int y, bool isSolid=true);
     const std::string name;
     int x, y;
     bool isPlayer=false;
@@ -22,4 +17,16 @@ struct Entity
 struct Wall
 {
     int x,y;
+};
+
+struct EntityBuilder
+{
+    static std::shared_ptr<Entity> player(std::string name, int x, int y,
+        void (*effectCallback)(std::shared_ptr<Entity>, std::shared_ptr<Entity>, Room*)
+    );
+    
+    static std::shared_ptr<Entity> enemy(std::string name, int x, int y, bool isSolid,
+        void (*behaviorCallback)(std::shared_ptr<Entity>, Room*),
+        void (*effectCallback)(std::shared_ptr<Entity>, std::shared_ptr<Entity>, Room*)
+    );
 };

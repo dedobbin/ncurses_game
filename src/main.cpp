@@ -25,9 +25,14 @@ void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
 void enemy_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room)
 {
     if (other->isPlayer) {
-        //todo: some effect
         sys.info("enemy touches player");
     }
+}
+
+void player_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room)
+{
+    sys.info("player touches enemy");
+
 }
 
 std::unique_ptr<Room> create_room(int id)
@@ -39,8 +44,8 @@ std::unique_ptr<Room> create_room(int id)
             return std::make_unique<Room>(10, 10);
         case 2:{
             auto room = std::make_unique<Room>(10, 10);
-            room->entities.emplace_back(new Entity("enemy_1", 3, 5, enemy_behavior, enemy_effect));
-            room->entities.emplace_back(new Entity("enemy_2", 2, 2, false, false));
+            room->entities.push_back(EntityBuilder::enemy("enemy", 3, 5, true, enemy_behavior, enemy_effect));
+            room->entities.emplace_back(new Entity("enemy_2", 2, 2, false));
             return room;
         }
         case 3:{
@@ -54,8 +59,10 @@ std::unique_ptr<Room> create_room(int id)
             int n_entities = 5;
             for (int i = 0; i < n_entities; i++){
                 auto pos = room->getRandomEmptyPos();
-                room->entities.emplace_back(
-                    new Entity("enemy", pos.first, pos.second, enemy_behavior, enemy_effect));
+                room->entities.push_back(
+                    EntityBuilder::enemy("enemy", pos.first, pos.second, true, enemy_behavior, enemy_effect)
+                ); 
+                    
             }
 
             return room;
@@ -68,7 +75,7 @@ std::unique_ptr<Room> create_room(int id)
 int main (int argc, char *argv[])
 {
     auto room = create_room(3);
-    auto player = std::make_shared<Entity>("player", 0, 0, true);
+    auto player = EntityBuilder::player("player", 5, 5, player_effect);
     room->entities.push_back(player);
     do {
         sys.ncurses_game_render(room.get());
