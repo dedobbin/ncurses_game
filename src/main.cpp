@@ -2,6 +2,7 @@
 #include "sys.h"
 #include "room.h"
 
+Sys sys;
 
 void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
 {
@@ -65,7 +66,6 @@ std::unique_ptr<Room> create_room(int id)
 
 int main (int argc, char *argv[])
 {
-    Sys sys;
     auto room = create_room(3);
     auto player = std::make_shared<Entity>("player", 0, 0, true);
     room->entities.push_back(player);
