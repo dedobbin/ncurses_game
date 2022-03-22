@@ -9,8 +9,8 @@ void window_deleter(WINDOW *win)
     delwin(win);
 }
 
-Windows::Windows(WINDOW* game, WINDOW* stats, WINDOW* debug)
-: game(game, &window_deleter), stats(stats, &window_deleter), debug(debug, &window_deleter)
+Windows::Windows(WINDOW* game, WINDOW* stats, WINDOW* info)
+: game(game, &window_deleter), stats(stats, &window_deleter), info(info, &window_deleter)
 {}
 
 Sys::Sys()
@@ -130,9 +130,9 @@ void Sys::ncurses_game_render(Room* r)
     wrefresh(game_window);
 }
 
-void Sys::debug_print(std::string str)
+void Sys::info(std::string str)
 {
     str += '\n';
-    wprintw(windows->debug.get(), str.c_str());
-    wrefresh(windows->debug.get());
+    wprintw(windows->info.get(), str.c_str());
+    wrefresh(windows->info.get());
 }
