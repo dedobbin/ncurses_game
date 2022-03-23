@@ -2,6 +2,7 @@
 #include <string>
 #include <memory>
 struct Room; //forward declaration because circular dependency
+struct Sys; //forward declaration because circular dependency
 
 struct Stats {
     int hp;
@@ -19,7 +20,7 @@ struct Entity
     void (*behaviorCallback)(std::shared_ptr<Entity> self, Room* room);
     void (*effectCallback)(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room);
     std::unique_ptr<Stats> stats;
-    void attack(Entity* other);
+    void attack(Entity* other, Sys* sys);
 };
 
 struct Wall

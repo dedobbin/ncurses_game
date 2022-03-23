@@ -27,8 +27,7 @@ void enemy_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, R
 {
     if (other->isPlayer) {
         assert(other->stats);
-        sys.info(self->name + " hits " + other->name);
-        self->attack(other.get());
+        self->attack(other.get(), &sys);
     }
 }
 
@@ -36,7 +35,7 @@ void player_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, 
 {
     if (!other->stats) return;
     sys.info(self->name + " hits " + other->name);
-    self->attack(other.get());
+    self->attack(other.get(), &sys);
 }
 
 std::unique_ptr<Room> create_room(int id)
@@ -72,6 +71,20 @@ std::unique_ptr<Room> create_room(int id)
 
             return room;
         }
+        case 4: {
+            auto room = std::make_unique<Room>(10, 10);
+            room->entities.push_back(EntityBuilder::enemy("enemy", 5, 2, true, 
+                new Stats{rand () % 20, rand () % 10},
+                enemy_behavior, enemy_effect));
+            
+            int n_walls = 20;
+            for (int i = 0; i < n_walls; i++){
+                auto pos = room->getRandomEmptyPos();
+                room->walls.emplace_back(new Wall{pos.first, pos.second});
+            }
+            
+            return room;
+        }
         default:
             throw std::runtime_error("invalid room id");
     }
@@ -79,12 +92,14 @@ std::unique_ptr<Room> create_room(int id)
 
 int main (int argc, char *argv[])
 {
-    auto room = create_room(3);
+    auto room = create_room(4);
     auto player = EntityBuilder::player("player", 5, 5, player_effect);
     room->entities.push_back(player);
+    bool keepGoing = true;
     do {
         sys.ncurses_game_render(room.get());
         room->tick();
-    } while (sys.ncurses_input(room.get()));
+        keepGoing = sys.ncurses_input(room.get());
+    } while (keepGoing);
     return 0;
 }
