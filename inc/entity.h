@@ -21,6 +21,7 @@ struct Entity
     void (*effectCallback)(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room);
     std::unique_ptr<Stats> stats;
     void attack(Entity* other, Sys* sys);
+    bool dead=false;
 };
 
 struct Wall

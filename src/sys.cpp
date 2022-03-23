@@ -112,7 +112,7 @@ void Sys::ncurses_game_render(Room* r)
         mvwaddch(game_window, wall->y, wall->x, '#');
     }
 
-    for(auto &e: r->entities){
+    for(auto &e: r->aliveEntities()){
         if (e->isPlayer) {
             wattron(game_window, COLOR_PAIR(2));
             mvwaddch(game_window, e->y, e->x, '@');

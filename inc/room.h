@@ -9,6 +9,7 @@ struct Room
     void tick();
     void moveEntity(std::shared_ptr<Entity> e, int x, int y);
     std::shared_ptr<Entity> getEntity(int x, int y);
+    std::vector<std::shared_ptr<Entity>> aliveEntities();
     bool hasWall(int x, int y);
     const int w;
     const int h;

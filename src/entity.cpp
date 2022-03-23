@@ -15,8 +15,16 @@ void Entity::attack(Entity* other, Sys* sys)
 {
     assert(stats);
     assert(other->stats);
-    other->stats->hp -= stats->power;
-    sys->info(name + " hits " + other->name);
+    auto attack = rand() % stats->power;
+    other->stats->hp -= attack;
+    //sys->info(name + " hits " + other->name);
+    sys->info(name + " hits " + other->name + " for " + std::to_string(attack)
+        + "\n" + std::to_string(other->stats->hp) + " left.")
+    ;
+    if (other->stats->hp <= 0){
+        sys->info(other->name + " is dead.");
+        dead = true;
+    }
 }
 
 std::shared_ptr<Entity> EntityBuilder::player(std::string name, int x, int y,

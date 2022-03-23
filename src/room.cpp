@@ -1,6 +1,8 @@
 #include "room.h"
+#include "common.h"
 #include <cassert>
 #include <algorithm>
+
 
 Room::Room(int w, int h)
 :w(w), h(h)
@@ -15,9 +17,16 @@ std::shared_ptr<Entity> Room::getPlayer()
     return *found;
 }
 
+std::vector<std::shared_ptr<Entity>> Room::aliveEntities()
+{
+    return filter(entities, [](const std::shared_ptr<Entity>& e) {
+        return !e->dead;
+    });
+}
+
 void Room::tick()
 {
-    for (auto &e: entities) {
+    for (auto &e: aliveEntities()) {
         if (!e->behaviorCallback) continue;
         e->behaviorCallback(e, this);
     }
@@ -48,7 +57,7 @@ void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
     if (hasWall(x, y)) return;
 
     auto collider = getEntity(x, y);
-    if (!collider || !collider->isSolid) {
+    if (!collider || !collider->isSolid || collider->dead) {
         e->x = x;
         e->y = y;
     } 
