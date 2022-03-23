@@ -34,7 +34,6 @@ void enemy_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, R
 void player_effect(std::shared_ptr<Entity> self, std::shared_ptr<Entity> other, Room* room)
 {
     if (!other->stats) return;
-    sys.info(self->name + " hits " + other->name);
     self->attack(other.get(), &sys);
 }
 
@@ -75,7 +74,7 @@ std::unique_ptr<Room> create_room(int id)
             auto room = std::make_unique<Room>(10, 10);
             room->entities.push_back(EntityBuilder::enemy("enemy", 5, 2, true, 
                 new Stats{rand () % 20, rand () % 10},
-                enemy_behavior, enemy_effect));
+                nullptr, enemy_effect));
             
             int n_walls = 20;
             for (int i = 0; i < n_walls; i++){
