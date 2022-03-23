@@ -62,7 +62,7 @@ void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
         e->y = y;
     } 
 
-    if (collider && collider->effectCallback){
+    if (collider && collider->effectCallback && !collider->dead){
         e->effectCallback(e, collider, this);
     }
 }

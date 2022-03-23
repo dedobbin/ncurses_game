@@ -23,7 +23,7 @@ void Entity::attack(Entity* other, Sys* sys)
     ;
     if (other->stats->hp <= 0){
         sys->info(other->name + " is dead.");
-        dead = true;
+        other->dead = true;
     }
 }
 

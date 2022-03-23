@@ -74,7 +74,7 @@ std::unique_ptr<Room> create_room(int id)
             auto room = std::make_unique<Room>(10, 10);
             room->entities.push_back(EntityBuilder::enemy("enemy", 5, 2, true, 
                 new Stats{rand () % 20, rand () % 10},
-                nullptr, enemy_effect));
+                enemy_behavior, enemy_effect));
             
             int n_walls = 20;
             for (int i = 0; i < n_walls; i++){
@@ -91,7 +91,7 @@ std::unique_ptr<Room> create_room(int id)
 
 int main (int argc, char *argv[])
 {
-    auto room = create_room(4);
+    auto room = create_room(3);
     auto player = EntityBuilder::player("player", 5, 5, player_effect);
     room->entities.push_back(player);
     bool keepGoing = true;
