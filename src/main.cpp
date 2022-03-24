@@ -14,55 +14,6 @@ int get_slope(int x1, int y1, int x2, int y2)
     return (y1 - y2) / (x1 - x2);
 }
 
-std::vector<std::pair<int, int>> get_points_between(int x1, int y1, int x2, int y2)
-{
-    //bresenhamsLineGeneration
-    std::vector<std::pair<int, int>> points;
-    bool issteep = (abs(y2 - y1) > abs(x2 - x1));
-    if (issteep) {
-        std::swap(x1, y1);
-        std::swap(x2, y2);
-    }
-    bool rev = false;
-    if (x1 > x2) {
-        std::swap(x1, x2);
-        std::swap(y1, y2);
-        rev = true;
-    }
-    int deltax = x2 - x1;
-    int deltay = abs(y2 - y1);
-    int error  = int(deltax / 2);
-    int y      = y1;
-    int ystep;
-    if (y1 < y2) {
-        ystep = 1;
-    } else {
-        ystep = -1;
-    }
-
-    for (int x = x1; x < x2 + 1; ++x) {
-        if (issteep) {
-            std::pair<int, int> pt = std::make_pair(y, x);
-            points.emplace_back(pt);
-        } else {
-            std::pair<int, int> pt = std::make_pair(x, y);
-            points.emplace_back(pt);
-        }
-
-        error -= deltay;
-        if (error < 0) {
-            y += ystep;
-            error += deltax;
-        }
-    }
-    // Reverse the list if the coordinates were reversed
-    if (rev) {
-        std::reverse(points.begin(), points.end());
-    }
-    
-    return points;
-}
-
 void enemy_behavior_rand(std::shared_ptr<Entity> self, Room* room)
 {
     switch(rand() % 4){
@@ -83,62 +34,33 @@ void enemy_behavior_rand(std::shared_ptr<Entity> self, Room* room)
 
 void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
 {
+    //todo: probably more efficient to find entities in box around self,
+    // then check if there is a wall between entity and self, if not add to spotted
     auto tl = std::make_pair(self->x - 2, self->y - 2);
     auto tr = std::make_pair(self->x + 2, self->y - 2);
     auto bl = std::make_pair(self->x - 2, self->y + 2);
     auto br = std::make_pair(self->x + 2, self->y + 2);
 
-    std::vector<std::shared_ptr<Entity>> spotted;
+    std::vector<std::shared_ptr<Entity>> spotted = {};
     for (int x = tl.first; x < tr.first; x++){
         int y = tl.second;
-        for (auto pt : get_points_between(self->x, self->y, x, y)){
-            if (room->hasWall(pt.first, pt.second)){
-                break;
-            }
-            auto spottedEntity = room->getEntity(pt.first, pt.second);
-            if (spottedEntity && spottedEntity != self){
-                spotted.push_back(spottedEntity);
-            }
-        }
+        room->entityLook(self, x, y, spotted);
     }
 
     for (int y = tr.second; y < br.second; y++){
         int x = tr.first;
-        for (auto pt : get_points_between(self->x, self->y, x, y)){
-            if (room->hasWall(pt.first, pt.second)){
-                break;
-            }
-            auto spottedEntity = room->getEntity(pt.first, pt.second);
-            if (spottedEntity && spottedEntity != self){
-                spotted.push_back(spottedEntity);
-            }
-        }
+        room->entityLook(self, x, y, spotted);
     }
 
     for (int x = br.first; x > bl.first; x--){
         int y = br.second;
-        for (auto pt : get_points_between(self->x, self->y, x, y)){
-            if (room->hasWall(pt.first, pt.second)){
-                break;
-            }
-            auto spottedEntity = room->getEntity(pt.first, pt.second);
-            if (spottedEntity && spottedEntity != self){
-                spotted.push_back(spottedEntity);
-            }
-        }
+        room->entityLook(self, x, y, spotted);
+
     }
 
     for (int y = bl.second; y > tl.second; y--){
         int x = bl.first;
-        for (auto pt : get_points_between(self->x, self->y, x, y)){
-            if (room->hasWall(pt.first, pt.second)){
-                break;
-            }
-            auto spottedEntity = room->getEntity(pt.first, pt.second);
-            if (spottedEntity && spottedEntity != self){
-                spotted.push_back(spottedEntity);
-            }
-        }
+        room->entityLook(self, x, y, spotted);
     }
 
     if (find_if(spotted.begin(), spotted.end(), [](std::shared_ptr<Entity> e){

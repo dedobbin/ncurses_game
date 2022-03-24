@@ -10,6 +10,8 @@ struct Room
     void moveEntity(std::shared_ptr<Entity> e, int x, int y);
     std::shared_ptr<Entity> getEntity(int x, int y);
     std::vector<std::shared_ptr<Entity>> aliveEntities();
+    void entityLook(std::shared_ptr<Entity> e, int x2, int y2,
+        std::vector<std::shared_ptr<Entity>> &output);
     bool hasWall(int x, int y);
     const int w;
     const int h;

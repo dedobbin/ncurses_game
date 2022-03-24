@@ -3,7 +3,6 @@
 #include <cassert>
 #include <algorithm>
 
-
 Room::Room(int w, int h)
 :w(w), h(h)
 {}
@@ -48,6 +47,19 @@ bool Room::hasWall(int x, int y)
     });
 
     return found != walls.end();
+}
+
+ void Room::entityLook(std::shared_ptr<Entity> e, int x2, int y2, 
+    std::vector<std::shared_ptr<Entity>> &output)
+{
+    for (auto pt : get_points_between(e->x, e->y, x2, y2)){
+        if (hasWall(pt.first, pt.second)){
+            break;
+        }
+        auto spottedEntity = getEntity(pt.first, pt.second);
+        if (spottedEntity && e != spottedEntity)
+            output.push_back(spottedEntity);
+    }
 }
 
 void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
