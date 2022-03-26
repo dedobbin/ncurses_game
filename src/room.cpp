@@ -57,8 +57,10 @@ bool Room::hasWall(int x, int y)
             break;
         }
         auto spottedEntity = getEntity(pt.first, pt.second);
-        if (spottedEntity && e != spottedEntity)
+        if (spottedEntity && e != spottedEntity){
             output.push_back(spottedEntity);
+            break;
+        }
     }
 }
 

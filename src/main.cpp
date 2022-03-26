@@ -3,7 +3,7 @@
 #include <algorithm>
 #include "sys.h"
 #include "room.h"
-
+#include "a_star.h"
 Sys sys;
 
 int get_slope(int x1, int y1, int x2, int y2)
@@ -55,7 +55,6 @@ void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
     for (int x = br.first; x > bl.first; x--){
         int y = br.second;
         room->entityLook(self, x, y, spotted);
-
     }
 
     for (int y = bl.second; y > tl.second; y--){
@@ -63,10 +62,15 @@ void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
         room->entityLook(self, x, y, spotted);
     }
 
-    if (find_if(spotted.begin(), spotted.end(), [](std::shared_ptr<Entity> e){
+    auto spottedPlayer = find_if(spotted.begin(), spotted.end(), [](std::shared_ptr<Entity> e){
         return e->isPlayer;
-    }) != spotted.end()){
+    });
+    if (spottedPlayer  != spotted.end()){
+        auto player = *spottedPlayer;
         sys.info("Player spotted");
+        sys.info(pathFind(room, self->x, self->y, player->x, player->y));
+    } else {
+        sys.info("did not spot Player");
     }
 }
 
