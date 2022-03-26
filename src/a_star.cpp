@@ -27,10 +27,10 @@ const int & Node::estimate(const int & xDest, const int & yDest) const
     yd=yDest-yPos;         
 
     // Euclidian Distance
-    //d=static_cast<int>(sqrt(xd*xd+yd*yd));
+    d=static_cast<int>(sqrt(xd*xd+yd*yd));
 
     // Manhattan distance
-    d=abs(xd)+abs(yd);
+    //d=abs(xd)+abs(yd);
     
     // Chebyshev distance
     //d=max(abs(xd), abs(yd));

@@ -36,10 +36,11 @@ void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
 {
     //todo: probably more efficient to find entities in box around self,
     // then check if there is a wall between entity and self, if not add to spotted
-    auto tl = std::make_pair(self->x - 2, self->y - 2);
-    auto tr = std::make_pair(self->x + 2, self->y - 2);
-    auto bl = std::make_pair(self->x - 2, self->y + 2);
-    auto br = std::make_pair(self->x + 2, self->y + 2);
+    const int viewRange = 3;
+    auto tl = std::make_pair(self->x - viewRange, self->y - viewRange);
+    auto tr = std::make_pair(self->x + viewRange, self->y - viewRange);
+    auto bl = std::make_pair(self->x - viewRange, self->y + viewRange);
+    auto br = std::make_pair(self->x + viewRange, self->y + viewRange);
 
     std::vector<std::shared_ptr<Entity>> spotted = {};
     for (int x = tl.first; x < tr.first; x++){
@@ -68,12 +69,13 @@ void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
     if (spottedPlayer  != spotted.end()){
         auto player = *spottedPlayer;
         sys.info("Player spotted");
-        sys.info(pathFind(room, self->x, self->y, player->x, player->y));
+        //sys.info(pathFind(room, self->x, self->y, player->x, player->y));
         auto dir = nextStep(room, self->x, self->y, player->x, player->y);
-        sys.info("move " + std::to_string(dir));
+        //sys.info("move " + std::to_string(dir));
         room->moveEntity(self, dir);
     } else {
         enemy_behavior_rand(self, room);
+        sys.info("Player lost");
     }
 }
 

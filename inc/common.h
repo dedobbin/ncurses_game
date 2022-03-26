@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 
-enum Dir { NONE = 999, DOWN = 1, RIGHT = 0, LEFT = 4, UP = 3};
+enum Dir { NONE = 999, DOWN = 1, RIGHT = 0, LEFT = 2, UP = 3};
 
 template <typename T, typename U>
 std::vector<T> filter (std::vector<T> vec, U f) 
