@@ -69,8 +69,11 @@ void enemy_behavior(std::shared_ptr<Entity> self, Room* room)
         auto player = *spottedPlayer;
         sys.info("Player spotted");
         sys.info(pathFind(room, self->x, self->y, player->x, player->y));
+        auto dir = nextStep(room, self->x, self->y, player->x, player->y);
+        sys.info("move " + std::to_string(dir));
+        room->moveEntity(self, dir);
     } else {
-        sys.info("did not spot Player");
+        enemy_behavior_rand(self, room);
     }
 }
 

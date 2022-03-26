@@ -1,10 +1,59 @@
+//https://code.activestate.com/recipes/577457-a-star-shortest-path-algorithm/
+
 #include "a_star.h"
+#include "room.h"
+#include <iostream>
+
+
+Node::Node(int xp, int yp, int d, int p) 
+: xPos (xp), yPos(yp), level(d), priority(p) 
+{}
+
+void Node::updatePriority(const int & xDest, const int & yDest)
+{
+    //priority=level+remaining distance estimate
+    priority=level+estimate(xDest, yDest)*10; //A*
+}
+
+void Node::nextLevel(const int & i) // i: direction
+{
+    level+=(dir==8?(i%2==0?10:14):10);
+}
+
+const int & Node::estimate(const int & xDest, const int & yDest) const
+{
+    static int xd, yd, d;
+    xd=xDest-xPos;
+    yd=yDest-yPos;         
+
+    // Euclidian Distance
+    //d=static_cast<int>(sqrt(xd*xd+yd*yd));
+
+    // Manhattan distance
+    d=abs(xd)+abs(yd);
+    
+    // Chebyshev distance
+    //d=max(abs(xd), abs(yd));
+
+    return(d);
+}
+
+Dir nextStep(Room* room, const int & xStart, const int & yStart, 
+                 const int & xFinish, const int & yFinish)
+{
+    auto path = pathFind(room, xStart, yStart, xFinish, yFinish);
+    if (path.empty())
+        return Dir::NONE;
+
+    return static_cast<Dir>(path[0] - '0');
+}
 
 bool operator<(const Node & a, const Node & b)
 {
   return a.priority < b.priority > b.priority;;
 }
 
+//todo: just return vector instead of string
 std::string pathFind(Room* room, const int & xStart, const int & yStart, 
                  const int & xFinish, const int & yFinish )
 {

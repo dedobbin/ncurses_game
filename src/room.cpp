@@ -81,6 +81,24 @@ void Room::moveEntity(std::shared_ptr<Entity> e, int x, int y)
     }
 }
 
+void Room::moveEntity(std::shared_ptr<Entity> e, Dir dir)
+{
+    switch(dir){
+        case Dir::UP:
+            moveEntity(e, e->x, e->y - 1);
+            break;
+        case Dir::DOWN:
+            moveEntity(e, e->x, e->y + 1);
+            break;
+        case Dir::LEFT:
+            moveEntity(e, e->x - 1, e->y);
+            break;
+        case Dir::RIGHT:
+            moveEntity(e, e->x + 1, e->y);
+            break;
+    }
+}
+
 std::pair<int, int> Room::getRandomEmptyPos()
 {
     int x, y;
