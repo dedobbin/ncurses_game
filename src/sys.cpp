@@ -136,6 +136,7 @@ void Sys::ncurses_game_render(Room* r)
 
 void Sys::info(std::string str)
 {
+    //todo: loop around
     str += '\n';
     wprintw(windows->info.get(), str.c_str());
     wrefresh(windows->info.get());
